@@ -1,0 +1,14 @@
+{
+  "name": "slugline",
+  "version": "0.0.1",
+  "description": "A desktop application for screenwriting",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Benjamin Posselt",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^14.0.1"
+  }
+}

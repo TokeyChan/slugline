@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+}
+#header {
+    height: 60px;
+    background-color: rgb(84, 115, 145);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+#header_middle {
+    text-align: center;
+    padding: 20px;
+    color:rgb(207, 228, 248);
+}
+
+@media only screen and (max-width: 600px)
+{
+    #writer_left, #writer_right {
+
+    }
+}
+@media only screen and (min-width: 600px)
+{
+    /*  */
+}
