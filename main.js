@@ -2,6 +2,8 @@ const { app, BrowserWindow, globalShortcut } = require('electron');
 const path = require('path');
 require('electron-reloader')(module);
 
+//Hier einfach eine Klasse verwenden, die das ganze Managed.
+
 function createWindow() {
     const win = new BrowserWindow({
         'width': 1200,
@@ -11,8 +13,8 @@ function createWindow() {
         }
     });
     globalShortcut.register('CommandOrControl+R', function() {
-		console.log('CommandOrControl+R is pressed')
-		win.reload()
+		console.log('CommandOrControl+R is pressed');
+		win.reload();
 	})
 
     win.loadFile('views/main/main.html');

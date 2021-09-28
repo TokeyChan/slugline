@@ -11,8 +11,5 @@
   "devDependencies": {
     "electron": "^14.0.1",
     "electron-reloader": "^1.2.1"
-  },
-  "dependencies": {
-    "jotform-css.js": "^1.0.1"
   }
 }
