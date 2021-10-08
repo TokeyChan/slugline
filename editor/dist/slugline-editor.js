@@ -10,6 +10,16 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/base.js":
+/*!*********************!*\
+  !*** ./src/base.js ***!
+  \*********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"HttpRequest\": () => (/* binding */ HttpRequest)\n/* harmony export */ });\n\n\nclass HttpRequest extends XMLHttpRequest {\n    constructor() {\n        super();\n    }\n    send() {\n        return new Promise((resolve, reject) => {\n            this.addEventListener('load', () => {\n                if (this.status >= 200 && this.status < 300) {\n                    resolve(this.responseText);\n                } else {\n                    console.warn(this.responseText);\n                    reject();\n                }\n            });\n            XMLHttpRequest.prototype.send.call(this);\n        });\n    }\n}\n\n//# sourceURL=webpack://slugline-editor/./src/base.js?");
+
+/***/ }),
+
 /***/ "./src/cursor.js":
 /*!***********************!*\
   !*** ./src/cursor.js ***!
@@ -36,7 +46,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ SluglineElement)\n/* harmony export */ });\n/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../style */ \"./src/style.js\");\n\n\nclass SluglineElement extends HTMLElement {\n    constructor() {\n        super();\n    }\n    connectedCallback() {\n        this.style_manager = new _style__WEBPACK_IMPORTED_MODULE_0__[\"default\"](this);\n        this.style_manager.update(_style__WEBPACK_IMPORTED_MODULE_0__[\"default\"].getActiveStyle(this.html_name));\n    }\n}\n\n//Sollte NIE instanziert werden\ncustomElements.define(\"slugline-element\", SluglineElement);\n\n//# sourceURL=webpack://slugline-editor/./src/element_src/base.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ SluglineElement)\n/* harmony export */ });\nclass SluglineElement extends HTMLElement {\n    constructor() {\n        super();\n    }\n    connectedCallback() {\n    }\n}\n\n//Sollte NIE instanziert werden\ncustomElements.define(\"slugline-element\", SluglineElement);\n\n//# sourceURL=webpack://slugline-editor/./src/element_src/base.js?");
 
 /***/ }),
 
@@ -106,7 +116,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _ele
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _elements__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./elements */ \"./src/elements.js\");\n/* harmony import */ var _cursor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cursor */ \"./src/cursor.js\");\n/* harmony import */ var _page__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./page */ \"./src/page.js\");\n/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./style */ \"./src/style.js\");\n\n\n\n\n\nclass SluglineEditor extends HTMLElement {\n    pages = [];\n    constructor() {\n        super();\n        this.attachShadow({mode: 'open'});\n    }\n    connectedCallback() { //wird automatisch aufgerufen\n        this.cursor = new _cursor__WEBPACK_IMPORTED_MODULE_1__[\"default\"]();\n        //style\n        const style = document.createElement(\"style\");\n        style.textContent = \":host { all: initial }\"\n        this.shadowRoot.appendChild(style);\n\n        this.style_manager = new _style__WEBPACK_IMPORTED_MODULE_3__[\"default\"](this);\n        this.style_manager.update(_style__WEBPACK_IMPORTED_MODULE_3__[\"default\"].getActiveStyle('slugline-editor'));\n\n        this.initialize();\n    }\n    initialize(config_file = null) {\n        if (config_file != null) {\n            this.initialize_from_file(config_file);\n        }\n        this.add_page(new _page__WEBPACK_IMPORTED_MODULE_2__[\"default\"]());\n    }\n    initialize_from_file(config_file) {\n\n    }\n    add_page(page) {\n        this.shadowRoot.appendChild(page);\n        this.pages.push(page);\n    }\n    attatch_listeners() {\n        this.addEventListener('keydown', (e) => {\n            console.log(e.key);\n        });\n    }\n}\n\n\ncustomElements.define(\"slugline-editor\", SluglineEditor);\n\n\n//# sourceURL=webpack://slugline-editor/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _elements__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./elements */ \"./src/elements.js\");\n/* harmony import */ var _cursor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cursor */ \"./src/cursor.js\");\n/* harmony import */ var _page__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./page */ \"./src/page.js\");\n/* harmony import */ var _base__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./base */ \"./src/base.js\");\n\n\n\n\n\nclass SluglineEditor extends HTMLElement {\n    pages = [];\n    style = \"\";\n    constructor() {\n        super();\n        \n        this.attachShadow({mode: 'open'});\n        \n        const style_link = document.getElementById('editor_style').href;\n\n        const request = new _base__WEBPACK_IMPORTED_MODULE_3__.HttpRequest();\n        request.open('GET', style_link);\n        request.send().then((result) => {\n            const style = document.createElement('style');\n            style.textContent = result;\n            this.shadowRoot.appendChild(style);\n        });\n    }\n    connectedCallback() { //wird automatisch aufgerufen\n        this.initialize();\n\n\n        this.cursor = new _cursor__WEBPACK_IMPORTED_MODULE_1__[\"default\"]();\n        this.pages[this.pages.length - 1].appendChild(this.cursor);\n    }\n    initialize(config_file = null) {\n        if (config_file != null) {\n            this.initialize_from_file(config_file);\n        }\n        this.add_page(new _page__WEBPACK_IMPORTED_MODULE_2__[\"default\"]());\n    }\n    initialize_from_file(config_file) {\n\n    }\n    add_page(page) {\n        this.shadowRoot.appendChild(page);\n        this.pages.push(page);\n    }\n    attatch_listeners() {\n        this.addEventListener('keydown', (e) => {\n            console.log(e.key);\n        });\n    }\n}\n\n\ncustomElements.define(\"slugline-editor\", SluglineEditor);\n\n\n//# sourceURL=webpack://slugline-editor/./src/index.js?");
 
 /***/ }),
 
@@ -116,17 +126,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _ele
   \*********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ SluglinePage)\n/* harmony export */ });\n/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style */ \"./src/style.js\");\n\n\nclass SluglinePage extends HTMLElement {\n    html_name = \"slugline-page\";\n    constructor() {\n        super();\n    }\n    connectedCallback() {\n        this.style_manager = new _style__WEBPACK_IMPORTED_MODULE_0__[\"default\"](this);\n        this.style_manager.update(_style__WEBPACK_IMPORTED_MODULE_0__[\"default\"].getActiveStyle(this.html_name));\n    }\n}\n\ncustomElements.define('slugline-page', SluglinePage);\n\n//# sourceURL=webpack://slugline-editor/./src/page.js?");
-
-/***/ }),
-
-/***/ "./src/style.js":
-/*!**********************!*\
-  !*** ./src/style.js ***!
-  \**********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ StyleManager)\n/* harmony export */ });\nclass StyleManager {\n    element; //das HTML Element, dessen styles gemanaged werden\n    values; //ein Objekt, in dem die Key-Value-Pairs der Style Werte gespeichert werden\n    constructor(element) {\n        this.element = element;\n        this.values = {};\n    }\n    add(key, value) {\n        if (key in this.values) {\n            throw \"Dieser Style ist bereits enthalten\";\n        }\n        this.values[key] = value;\n        this._update();\n    }\n    remove(key) {\n        delete this.values[key];\n        this._update();\n    }\n    update(values) {\n        this.values = values;\n        this._update();\n    }\n    _update() {\n        const style = Object.keys(this.values).map(key => key + \": \" + this.values[key]).join(\";\");\n        this.element.style.cssText = style;\n    }\n    static getActiveStyle(element_name) {\n        // Here, the user-selected stylesheet should be grabbed. I do not know how to do this yet, I will have to \n        // implement some kind of API. \n        // While that does not work, I will get the basic one\n        return window.slugline.getActiveStyle(element_name);\n    }\n}\n\n//# sourceURL=webpack://slugline-editor/./src/style.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ SluglinePage)\n/* harmony export */ });\nclass SluglinePage extends HTMLElement {\n    html_name = \"slugline-page\";\n    constructor() {\n        super();\n    }\n    connectedCallback() {\n    }\n}\n\ncustomElements.define('slugline-page', SluglinePage);\n\n//# sourceURL=webpack://slugline-editor/./src/page.js?");
 
 /***/ })
 

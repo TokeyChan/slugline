@@ -8,25 +8,32 @@ import {
 } from './elements';
 import Cursor from './cursor';
 import SluglinePage from './page';
-import StyleManager from './style';
+import { HttpRequest } from './base';
 
 class SluglineEditor extends HTMLElement {
     pages = [];
+    style = "";
     constructor() {
         super();
+        
         this.attachShadow({mode: 'open'});
+        
+        const style_link = document.getElementById('editor_style').href;
+
+        const request = new HttpRequest();
+        request.open('GET', style_link);
+        request.send().then((result) => {
+            const style = document.createElement('style');
+            style.textContent = result;
+            this.shadowRoot.appendChild(style);
+        });
     }
     connectedCallback() { //wird automatisch aufgerufen
-        this.cursor = new Cursor();
-        //style
-        const style = document.createElement("style");
-        style.textContent = ":host { all: initial }"
-        this.shadowRoot.appendChild(style);
-
-        this.style_manager = new StyleManager(this);
-        this.style_manager.update(StyleManager.getActiveStyle('slugline-editor'));
-
         this.initialize();
+
+
+        this.cursor = new Cursor();
+        this.pages[this.pages.length - 1].appendChild(this.cursor);
     }
     initialize(config_file = null) {
         if (config_file != null) {

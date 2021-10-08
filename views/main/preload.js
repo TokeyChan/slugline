@@ -1,12 +1,13 @@
 const { contextBridge } = require('electron');
-const StyleRegistry = require('./../../style_registry/registry')
+const { renderTemplate } = require('./../../utils/templates');
 
-const registry = new StyleRegistry();
+window.addEventListener('DOMContentLoaded', () => {
 
+});
 
 contextBridge.exposeInMainWorld(
     'slugline',
     {
-        getActiveStyle: (selector) => registry.getActiveStyle(selector)
+
     }
 );

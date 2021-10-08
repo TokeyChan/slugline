@@ -1,6 +1,9 @@
 const { app, BrowserWindow, globalShortcut } = require('electron');
+const fs = require('fs');
 const path = require('path');
+const { renderTemplate } = require('./utils/templates');
 require('electron-reloader')(module);
+
 
 //Hier einfach eine Klasse verwenden, die das ganze Managed.
 
@@ -15,9 +18,12 @@ function createWindow() {
     globalShortcut.register('CommandOrControl+R', function() {
 		console.log('CommandOrControl+R is pressed');
 		win.reload();
-	})
-
-    win.loadFile('views/main/main.html');
+	});
+    renderTemplate(win, './views/main/main.html', { 
+        'editor_style': `${__dirname}/views/main/styles/default_editor.css`, 
+        'main_style': `${__dirname}/views/main/styles/main.css`,
+        'editor_js': `${__dirname}/editor/dist/slugline-editor.js`
+     })
     win.webContents.openDevTools();
 }
 
