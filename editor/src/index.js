@@ -4,6 +4,7 @@ import {
     SluglineHeadingElement,
     SluglineNameElement,
     SluglineParentheticalElement,
+    SluglineTextElement,
     SluglineTransitionElement
 } from './elements';
 import Cursor from './cursor';
@@ -12,6 +13,7 @@ import { HttpRequest } from './base';
 
 class SluglineEditor extends HTMLElement {
     pages = [];
+    elements = []; // Ein SluglineElement Array. (Also halt Subklassen davon)
     style = "";
     constructor() {
         super();
@@ -31,15 +33,19 @@ class SluglineEditor extends HTMLElement {
     connectedCallback() { //wird automatisch aufgerufen
         this.initialize();
 
-
-        this.cursor = new Cursor();
         this.pages[this.pages.length - 1].appendChild(this.cursor);
+        document.addEventListener('keydown', (e) => {
+            this.cursor.handle_key(e);
+        });
     }
     initialize(config_file = null) {
         if (config_file != null) {
             this.initialize_from_file(config_file);
+        } else {
+            this.add_page(new SluglinePage());
+            this.add_element(new )
         }
-        this.add_page(new SluglinePage());
+        this.cursor = new Cursor();
     }
     initialize_from_file(config_file) {
 
