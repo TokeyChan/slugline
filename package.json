@@ -9,6 +9,10 @@
   "author": "Benjamin Posselt",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^14.0.1"
+    "electron": "^14.0.1",
+    "electron-reloader": "^1.2.1"
+  },
+  "dependencies": {
+    "tmp": "^0.2.1"
   }
 }

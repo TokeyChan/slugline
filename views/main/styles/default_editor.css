@@ -1,0 +1,18 @@
+slugline-page {
+    background-color: rgb(255, 255, 255);
+    width: 800px;
+    height: 1130px;
+    margin-top: 15px;
+    box-shadow: 0px 0px 5px var(--shadow);
+    display: block;
+    padding: 40px;
+}
+slugline-editor {
+    display: block;
+}
+slugline-cursor {
+    display: block;
+    background-color: rgb(102, 102, 102);
+    width: 2px;
+    height: 20px;
+}
